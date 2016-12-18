@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_user_info"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/food1"
+    tools:context="android.dgaps.com.resturantapp.Login">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="380dp"
+        android:layout_centerInParent="true"
+        android:background="@color/White"
+        android:id="@+id/relativeLayout">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/justfood" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Login"
+            android:textColor="@color/Black"
+            android:textSize="24sp"
+            android:layout_below="@+id/icon"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:id="@+id/textlogin"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/text"
+            android:layout_centerHorizontal="true"
+            android:text="insert your email and password to login"
+            android:layout_marginTop="5sp"
+            android:layout_below="@+id/textlogin"/>
+        <EditText
+            android:id="@+id/et_address"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/text"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edittext_style"
+            android:ems="10"
+            android:paddingLeft="100sp"
+            android:hint="Email"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:layout_alignLeft="@+id/et_address"
+            android:layout_alignStart="@+id/et_address"
+            android:layout_below="@+id/et_address"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edittext_style"
+            android:ems="10"
+            android:paddingLeft="80sp"
+            android:hint="Passowrd"
+            android:inputType="textPassword" />
+
+
+        <Button
+            android:id="@+id/btn_register"
+            android:layout_width="240dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/et_password"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/btn_background"
+            android:text="Login"
+            android:textAllCaps="false"
+            android:textColor="@color/White" />
+
+        <Button
+            android:text="Facebook"
+            android:textAllCaps="false"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:id="@+id/btn_fb"
+            android:textColor="@color/White"
+            android:background="@drawable/fb_background"
+            android:layout_marginTop="28dp"
+            android:layout_below="@+id/btn_register"
+            android:layout_alignLeft="@+id/et_password"
+            android:layout_alignStart="@+id/et_password" />
+
+        <Button
+            android:text="Gmail"
+            android:textAllCaps="false"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:id="@+id/btn_gmail"
+            android:background="@drawable/gmail_background"
+            android:textColor="@color/White"
+            android:layout_marginTop="28dp"
+            android:layout_below="@id/btn_register"
+            android:layout_alignRight="@+id/et_password"
+            android:layout_alignEnd="@+id/et_password" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

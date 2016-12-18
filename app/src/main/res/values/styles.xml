@@ -6,6 +6,14 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:dropDownListViewStyle">@style/PopupMenuListView</item>
+    </style>
+    <style name="PopupMenuListView" parent="@style/Widget.AppCompat.Light.ListView.DropDown">
+        <item name="android:divider">#fff</item>
+        <item name="android:dividerHeight">2dp</item>
+        <item name="android:actionMenuTextColor">@color/White</item>
+        <item name="android:background">@color/Black</item>
+        <item name = "android:textColor">@color/White</item>
     </style>
 
 </resources>

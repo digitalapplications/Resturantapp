@@ -4,56 +4,66 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/resturantbg"
+    android:background="@drawable/food1"
     tools:context="android.dgaps.com.resturantapp.MainActivity">
 
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#fff"
-    android:alpha=".75">
-    <Button
-        android:text="OK"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/et_cityname"
-        android:layout_alignParentRight="true"
-        android:background="@color/colorPrimary"
-        android:textColor="#fff"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="24dp"
-        android:layout_marginEnd="24dp"
-        android:id="@+id/btn_ok" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:background="@drawable/edittext_style"
-        android:layout_marginTop="13dp"
-        android:id="@+id/et_cityname"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:hint="Enter city" />
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_below="@+id/et_cityname"
-        android:layout_marginTop="10dp">
+        android:layout_height="340dp"
+        android:layout_centerInParent="true"
+        android:background="@color/White">
 
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/lv_resturants">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:id="@+id/iv_icon"
+            android:src="@drawable/justfood"/>
 
-        </ListView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Just Food"
+            android:textSize="24sp"
+            android:textColor="@color/Gold"
+            android:layout_marginTop="7dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/iv_icon"
+            android:id="@+id/tv_text"
+            android:src="@drawable/text"/>
 
-    </LinearLayout>
 
-</RelativeLayout>
+        <Spinner
+            android:id="@+id/spinner_category"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/tv_text"
+            android:layout_centerHorizontal="true"
+            ></Spinner>
+
+        <EditText
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/spinner_category"
+            android:background="@drawable/edittext_style"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/et_city"
+            android:layout_marginTop="10dp"
+            android:hint="Enter your city name "/>
+
+        <Button
+            android:id="@+id/btn_findfood"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/et_city"
+            android:text="Find Food"
+            android:layout_marginTop="10dp"
+            android:textAllCaps="false"
+            android:background="@drawable/btn_background"
+            android:textColor="@color/White"/>
+
+
+    </RelativeLayout>
 </RelativeLayout>
