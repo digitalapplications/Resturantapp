@@ -25,6 +25,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,7 +59,11 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
+        // Load an ad into the AdMob banner view.
+        AdView adView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .setRequestAgent("android_studio:ad_template").build();
+        adView.loadAd(adRequest);
         et_city = (EditText) findViewById(R.id.et_city);
 
         spinner_category = (Spinner) findViewById(R.id.spinner_category);
@@ -72,6 +78,16 @@ public class MainActivity extends Activity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 category = arr[i];
+                if(category.equals("rest_name")){
+                    et_city.setHint("Enter resturant name");
+                }
+                else if(category.equals("rest_category")){
+                    et_city.setHint("Enter resturant  category");
+                }
+                else if(category.equals("city_name")){
+                    et_city.setHint("Enter city name");
+                }
+
             }
 
             @Override

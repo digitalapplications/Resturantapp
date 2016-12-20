@@ -1,13 +1,24 @@
 package android.dgaps.com.resturantapp;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,15 +31,31 @@ public class ExpendiblelistviewAdapter extends BaseExpandableListAdapter {
     private Context ctx;
     private List<String> listDataHeader;
     private HashMap<String,List<String>> listHashMap;
-    private HashMap<String,String> customMap;
     private HashMap<String,String> pricemap;
+    private  HashMap<String,String> idmap;
 
 
-    public ExpendiblelistviewAdapter(Context ctx,List<String>listDataHeader,HashMap<String, List<String>> listHashMap,HashMap<String,String>pricemap) {
+    List<Integer> item_idlist;
+    List<Integer> quantity_list;
+    List<Integer> pricelist;
+    List<String> item_namelist;
+
+
+
+
+
+    public ExpendiblelistviewAdapter(Context ctx,List<String>listDataHeader,HashMap<String, List<String>> listHashMap,HashMap<String,String>pricemap,HashMap<String,String> idmap) {
         this.ctx = ctx;
         this.listHashMap = listHashMap;
         this.listDataHeader = listDataHeader;
         this.pricemap = pricemap;
+        this.idmap = idmap;
+
+        item_idlist = new ArrayList<>();
+        quantity_list = new ArrayList<>();
+        item_namelist = new ArrayList<>();
+        pricelist = new ArrayList<>();
+
     }
 
     @Override
@@ -81,7 +108,7 @@ public class ExpendiblelistviewAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int i, int i1, boolean b, View view, ViewGroup viewGroup) {
+    public View getChildView(final int i, final int i1, boolean b, View view, ViewGroup viewGroup) {
 
         final String childtext = (String) getChild(i,i1);
         if(view == null){
@@ -95,13 +122,85 @@ public class ExpendiblelistviewAdapter extends BaseExpandableListAdapter {
         TextView tvdescription = (TextView) view.findViewById(R.id.tv_description);
 
 
-        TextView tvprice = (TextView) view.findViewById(R.id.tv_price);
+        final TextView tvprice = (TextView) view.findViewById(R.id.tv_price);
 
         for(String str : pricemap.keySet()){
             tvprice.setText(pricemap.get(childtext));
         }
 
         ToggleButton tb_addtocart = (ToggleButton) view.findViewById(R.id.tb_addtocart);
+        tb_addtocart.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    final Dialog dialog = new Dialog(ctx);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.customdialog);
+
+                    final EditText et_quantity = (EditText) dialog.findViewById(R.id.et_quantity);
+
+                    Button btn_done = (Button) dialog.findViewById(R.id.btn_done);
+                    btn_done.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            int sum = 0;
+                            if(et_quantity.getText().toString().equals("")){
+                                Toast.makeText(ctx, "Please Enter a value", Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+
+                                int quantity = Integer.parseInt(et_quantity.getText().toString());
+                                int price = Integer.parseInt(tvprice.getText().toString());
+
+                                int total = quantity*price;
+                                dialog.dismiss();
+                                Toast.makeText(ctx, quantity+" price = "+total, Toast.LENGTH_SHORT).show();
+
+                                quantity_list.add(quantity);
+                                item_idlist.add(Integer.parseInt(idmap.get(childtext)));
+                                item_namelist.add(childtext);
+                                pricelist.add(total);
+
+                                for(int i = 0; i<pricelist.size(); i++){
+                                   sum =+pricelist.get(i);
+                                }
+
+
+
+
+                            }
+                        }
+                    });
+
+                    Button btn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+                    btn_cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    dialog.show();
+
+                }
+
+                else if (!b){
+                    for(int k =0;k<item_namelist.size();k++){
+
+                        String removed = item_namelist.get(k);
+                        int index = k;
+                        if(removed.equals(childtext)){
+                            quantity_list.remove(k);
+                            item_namelist.remove(k);
+                            item_idlist.remove(k);
+                            pricelist.remove(k);
+                        }
+
+
+                    }
+                }
+            }
+        });
 
 
         return view;
@@ -110,5 +209,28 @@ public class ExpendiblelistviewAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int i, int i1) {
         return true;
+    }
+
+
+
+    public  void sendData(){
+
+        if(item_namelist.size()>0){
+
+          //  Log.d("zmasize",quantity_list.size()+"  "+ item_idlist.size()+"  "+item_namelist.size()+"  "+pricelist.size());
+
+            Intent intent = new Intent(ctx,ShowOrder.class);
+            intent.putExtra("hotel_id",Items.hotel_id);
+
+            intent.putIntegerArrayListExtra("pricelist", (ArrayList<Integer>) pricelist);
+            intent.putStringArrayListExtra("item_namelist", (ArrayList<String>) item_namelist);
+            intent.putIntegerArrayListExtra("quantity_list", (ArrayList<Integer>) quantity_list);
+            intent.putIntegerArrayListExtra("item_idlist", (ArrayList<Integer>) item_idlist);
+            ctx.startActivity(intent);
+        }
+        else{
+            Toast.makeText(ctx, "Please select some item", Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

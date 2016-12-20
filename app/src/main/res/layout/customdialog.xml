@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:inputType="number"
+        android:hint="Enter Quantity"
+        android:paddingLeft="100dp"
+        android:ems="10"
+        android:id="@+id/et_quantity" />
+
+    <LinearLayout
+        android:layout_below="@+id/et_quantity"
+        android:layout_width="match_parent"
+        android:layout_height="70dp">
+
+        <Button
+            android:id="@+id/btn_done"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/btn_background"
+            android:text="Done"
+            android:textColor="@color/White"
+            android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/btn_background"
+            android:text="Cancel"
+            android:textColor="@color/White"
+            android:textAllCaps="false"/>
+    </LinearLayout>
+</RelativeLayout>

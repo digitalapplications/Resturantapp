@@ -38,11 +38,14 @@ public class Items extends Activity {
     private HashMap<String,List<String>>listHash;
     private HashMap<String,String> customMap;
     private HashMap<String,String> priceMap;
+    private HashMap<String,String> idmap;
 
+    public static String hotel_id;
     List<String> name;
 
     TextView company_name;
-    ImageView company_icon;
+    ImageView company_icon,checkout;
+
 
 
     @Override
@@ -52,14 +55,14 @@ public class Items extends Activity {
 
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        dataHeader = new ArrayList<>();
-        listHash = new HashMap<>();
-        customMap = new HashMap<>();
-        priceMap = new HashMap<>();
+
 
 
         String h_id =   getIntent().getStringExtra("h_id");
         String h_name = getIntent().getStringExtra("h_name");
+
+        hotel_id = h_id;
+
 
         byte[] byteArray = getIntent().getByteArrayExtra("image");
         Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
@@ -72,14 +75,20 @@ public class Items extends Activity {
         company_icon = (ImageView) findViewById(R.id.company_icon);
         company_icon.setImageBitmap(bmp);
 
+        checkout = (ImageView) findViewById(R.id.checkout);
+        checkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listAdapter.sendData();
+            }
+        });
+
 
         listView = (ExpandableListView) findViewById(R.id.expanded_listview);
         listView.setDividerHeight(10);
         //initData();
 
         requestData("http://iesco.enjoyboss.com/get-rest-menu?rest_id=1");
-
-
 
     }
 
@@ -126,7 +135,11 @@ public class Items extends Activity {
             @Override
             public void onResponse(String s) {
                 Log.d("menu", s);
-
+                dataHeader = new ArrayList<>();
+                listHash = new HashMap<>();
+                customMap = new HashMap<>();
+                priceMap = new HashMap<>();
+                idmap = new HashMap<>();
                 try {
                     JSONObject parent = new JSONObject(s);
                     JSONArray data = parent.getJSONArray("data");
@@ -145,6 +158,10 @@ public class Items extends Activity {
                             String item_name = item.getString("name");
                             Log.d("item_name",item_name);
                             name.add(item_name);
+                            String id = item.getString("id");
+                            Log.d("id",id);
+
+                            idmap.put(name.get(j),id);
 
                             String price = item.getString("price");
                             Log.d("price",price);
@@ -152,17 +169,19 @@ public class Items extends Activity {
 
 
 
-                            listHash.put(dataHeader.get(j),name);
 
-                            Log.d("listhash",listHash.size()+"");
-                            Log.d("price",priceMap.size()+"");
-                            Log.d("name",name.size()+"");
+
 
                         }
+                        listHash.put(dataHeader.get(i),name);
+                        Log.d("listhash",listHash.size()+"");
+                        Log.d("price",priceMap.size()+"");
+                        Log.d("name",name.size()+"");
+
                     }
 
 
-                    listAdapter = new ExpendiblelistviewAdapter(Items.this,dataHeader,listHash,priceMap);
+                    listAdapter = new ExpendiblelistviewAdapter(Items.this,dataHeader,listHash,priceMap,idmap);
                     listView.setAdapter(listAdapter);
 
                 } catch (JSONException e) {

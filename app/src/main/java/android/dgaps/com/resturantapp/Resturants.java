@@ -1,6 +1,7 @@
 package android.dgaps.com.resturantapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,6 +44,11 @@ public class Resturants extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resturants);
 
+        // Load an ad into the AdMob banner view.
+        AdView adView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .setRequestAgent("android_studio:ad_template").build();
+        adView.loadAd(adRequest);
 
         names = new ArrayList<>();
         path = new ArrayList<>();
@@ -77,25 +85,36 @@ public class Resturants extends AppCompatActivity {
 
                 try {
                     JSONObject parent = new JSONObject(s);
-                    JSONArray data = parent.getJSONArray("data");
+                    String result = parent.getString("result");
 
-                    for(int i = 0 ;i<data.length();i++){
-                        JSONObject child = data.getJSONObject(i);
+                     if(result.equals("success")){
+                         JSONArray data = parent.getJSONArray("data");
 
-                        String str = child.getString("name");
-                        String logo = child.getString("logo");
-                        String id = child.getString("id");
+                         for(int i = 0 ;i<data.length();i++){
+                             JSONObject child = data.getJSONObject(i);
 
-                        Log.d("id",id);
+                             String str = child.getString("name");
+                             String logo = child.getString("logo");
+                             String id = child.getString("id");
+
+                             Log.d("id",id);
 
 
-                        names.add(str);
-                        path.add(logo);
-                        hotel_id.add(id);
+                             names.add(str);
+                             path.add(logo);
+                             hotel_id.add(id);
 
-                    }
-                    customAdapter adapter = new customAdapter(Resturants.this, android.R.layout.simple_list_item_1, names, path,hotel_id);
-                    lv.setAdapter(adapter);
+                         }
+                         customAdapter adapter = new customAdapter(Resturants.this, android.R.layout.simple_list_item_1, names, path,hotel_id);
+                         lv.setAdapter(adapter);
+
+                     }
+
+                    else{
+                         Toast.makeText(Resturants.this, "No hotel found", Toast.LENGTH_SHORT).show();
+                         Intent intent = new Intent(Resturants.this,MainActivity.class);
+                         startActivity(intent);
+                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
